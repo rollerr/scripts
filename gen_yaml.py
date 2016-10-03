@@ -19,8 +19,8 @@ def convert_array_dict(array):
         remote_interface = element[4].lower()
         remote_ip = element[5]
 
-        inside_dict_local = {'name': local_interface, 'address': local_ip, 'description': '"{} | {}"'.format(remote_neighbor, remote_interface)}
-        inside_dict_remote = {'name': remote_interface, 'address': remote_ip, 'description': '"{} | {}"'.format(local_device, local_ip)}
+        inside_dict_local = {'name': local_interface, 'address': local_ip, 'description': "{} | {}".format(remote_neighbor, remote_interface)}
+        inside_dict_remote = {'name': remote_interface, 'address': remote_ip, 'description': "{} | {}".format(local_device, local_ip)}
 
         try:
             dict_[local_device]['interfaces']
