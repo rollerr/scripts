@@ -1,0 +1,28 @@
+127.0.0.1 localhost
+10.0.254.12 dc2-edg-r1
+10.0.254.13 dc2-edg-r2
+10.0.254.14 dc2-cor-r1
+10.0.254.15 dc2-tor-r1
+10.0.254.1 dc1-tor-r1
+10.0.254.2 dc1-tor-r2
+10.0.254.3 dc1-cor-r1
+10.0.254.4 dc1-cor-r2
+10.0.254.5 dc1-edg-r1
+10.0.254.6 dc1-edg-r2
+10.0.254.9 branch1-edg-r1
+10.0.254.11 branch1-cor-r1
+10.0.254.16 branch1-tor-r1
+10.0.254.17 branch2-edg-r1
+10.0.254.18 branch2-cor-r1
+10.0.254.19 branch2-tor-r1
+10.100.254.7 super-pe-r1
+10.100.254.8 super-pe-r2
+10.100.254.9 external-as-1
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
