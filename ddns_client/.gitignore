@@ -1,0 +1,10 @@
+*.egg-info
+*.egg
+*.pyc
+__pycache__/
+.vscode/
+.env   
+.tox/
+.*cpython.*
+tests/__pycache__/.*
+tests/__pycache__/.*

@@ -4,8 +4,9 @@ setup(
     name="ddns_client",
     version="0.0.1",
     author="Ric Roller",
-    packages=find_packages(include=["ddns_client", "ddns_client.*", "tests"]),
-    package_dir={"": "src"},
+    packages=find_packages(),
+    test_suite="tox",
+    tests_require=["tox"],
     install_requires=[
         "paramiko",
         "requests",

@@ -1,5 +1,5 @@
 import pytest
-from ddns_client.src.ssh_handler import parse_for_ipv4_address
+from ddns_client import ssh_handler
 
 
 test_1 = "    inet 70.106.247.115/24 brd 70.106.247.255 scope global eth0\n"
@@ -12,5 +12,5 @@ test_1 = "    inet 70.106.247.115/24 brd 70.106.247.255 scope global eth0\n"
     ],
 )
 def test_parse_for_ipv4_address(test_input, expected_results):
-    results = parse_for_ipv4_address(test_input)
+    results = ssh_handler.parse_for_ipv4_address(test_input)
     assert results == expected_results
