@@ -24,9 +24,6 @@ class CloudfareExecutionContext:
         }
 
     def publish_ipv4_to_cloudfare(self) -> None:
-        import pdb
-
-        pdb.set_trace()
         cloudfare_response = requests.put(
             self.cloudfare_root_record,
             headers=self.headers,

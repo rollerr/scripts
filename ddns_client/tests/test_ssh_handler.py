@@ -39,7 +39,6 @@ class TestSetupParamiko(unittest.TestCase):
         mock_from_private_key_file.return_value = "mock_private_key"
         mock_get_private_key.return_value = "mock_private_key_path"
         with patch.object(paramiko.SSHClient, "connect") as connect:
-            # connect.return_value = None
             connect.side_effect = paramiko.AuthenticationException
             ssh_handler.setup_paramiko()
             connect.assert_called_once()
