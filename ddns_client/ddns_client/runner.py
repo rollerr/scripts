@@ -51,7 +51,7 @@ def check_for_ipv4_change(cloudfare_client: CloudfareExecutionContext) -> bool:
         cloudfare_ipv4 = cloudfare_response["result"]["content"]
         if wan_ipv4_ip != cloudfare_ipv4:
             cloudfare_client.ipv4_data["content"] = wan_ipv4_ip
-            cloudfare_client.publish_ipv4_to_cloudfare()
+            # cloudfare_client.publish_ipv4_to_cloudfare()
             return True
         else:
             return False
