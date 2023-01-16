@@ -25,10 +25,24 @@ def test_parse_for_ipv4_address(test_input, expected_results):
 
 
 class TestSetupParamiko(unittest.TestCase):
-    def test_setup_paramiko(self):
+    def test_setup_paramiko_1(self):
         with patch.object(ssh_handler, "get_private_key") as private_key_path:
             private_key_path.return_value = [
                 "/home/username/.ssh/id_rsa",
                 "/home/username/.ssh/id_rsa.pub",
             ]
-        self.assertRaises(FileNotFoundError, ssh_handler.setup_paramiko)
+            self.assertRaises(FileNotFoundError, ssh_handler.setup_paramiko)
+
+    @patch.object(ssh_handler, "get_private_key")
+    @patch.object(paramiko.RSAKey, "from_private_key_file")
+    def test_setup_paramiko_2(self, mock_from_private_key_file, mock_get_private_key):
+        mock_from_private_key_file.return_value = "mock_private_key"
+        mock_get_private_key.return_value = "mock_private_key_path"
+        with patch.object(paramiko.SSHClient, "connect") as connect:
+            # connect.return_value = None
+            connect.side_effect = paramiko.AuthenticationException
+            ssh_handler.setup_paramiko()
+            connect.assert_called_once()
+            self.assertRaises(
+                paramiko.AuthenticationException, ssh_handler.setup_paramiko().connect
+            )

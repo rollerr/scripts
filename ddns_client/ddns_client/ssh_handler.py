@@ -12,10 +12,9 @@ def setup_paramiko():
             private_key = paramiko.RSAKey.from_private_key_file(file)
         except FileNotFoundError:
             continue
-        finally:
-            if not private_key:
-                raise FileNotFoundError("No private key file found")
-    try:
+    if not private_key:
+        raise FileNotFoundError("No private key file found")
+    try:  # pragma: no cover
         client.connect(hostname="192.168.2.254", username="ubnt", pkey=private_key)
     except paramiko.AuthenticationException:
         # TODO write test case? publish to cloudwatch
