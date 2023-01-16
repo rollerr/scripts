@@ -1,18 +1,18 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 
-import json
 import click
+import json
 import requests
 
-from ssh_handler import get_wan_ip
+from ddns_client.ssh_handler import get_wan_ip
 
 
 class CloudfareExecutionContext:
     def __init__(self, api_key_file: str):
         self.api_key_file = api_key_file
         self.zone_id = "e8195e5b162db5b4d1241a2725193443"
-        self.root_id = "2fd478b05852a396feda0e6efb8cc285"
-        self.cloudfare_v4_url = f"https://api.cloudflare.com/client/v4/zones/{self.zone_id}/dns_records/2fd478b05852a396feda0e6efb8cc285"
+        self.record_id = "2fd478b05852a396feda0e6efb8cc285"
+        self.cloudfare_root_record = f"https://api.cloudflare.com/client/v4/zones/{self.zone_id}/dns_records/{self.record_id}"
         self.api_key = self.get_api_key(api_key_file)
         self.headers = {
             "Authorization": f"Bearer {self.api_key}",
@@ -25,14 +25,17 @@ class CloudfareExecutionContext:
             "ttl": 1,
         }
 
-    def publish_ipv4_to_cloudfare(self):
+    def publish_ipv4_to_cloudfare(self, ipv4_data) -> None:
+        self.ipv4_data.content = ipv4_data
         cloudfare_response = requests.put(
-            cloudfare_v4_url, headers=self.headers, data=json.dumps(ipv4_data)
+            self.cloudfare_root_record,
+            headers=self.headers,
+            data=json.dumps(self.ipv4_data),
         )
         print(cloudfare_response)
 
     def get_cloudfare_record_id(self, record=None) -> None:
-        url = f"https://api.cloudflare.com/client/v4/zones/{self.zone_id}/dns_records/{self.root_id}"
+        url = self.cloudfare_root_record
         cloudfare_response = requests.get(url, headers=self.headers)
         return cloudfare_response
 
@@ -43,12 +46,21 @@ class CloudfareExecutionContext:
 
 
 def check_for_ipv4_change(cloudfare_client: CloudfareExecutionContext) -> bool:
-    import pdb
-
-    pdb.set_trace()
     wan_ipv4_ip = get_wan_ip()
-    cloudfare_client.get_cloudfare_record_id()
-    pass
+    cloudfare_response = cloudfare_client.get_cloudfare_record_id()
+    if cloudfare_response.status_code == 200:
+        cloudfare_response = cloudfare_response.json()
+        cloudfare_ipv4 = cloudfare_response["result"]["content"]
+        if wan_ipv4_ip != cloudfare_ipv4:
+            cloudfare_client.ipv4_data["content"] = wan_ipv4_ip
+            cloudfare_client.publish_ipv4_to_cloudfare()
+            return True
+        else:
+            return False
+    else:
+        print("uh oh")
+        # publish_logs_to_aws()
+        return False
 
 
 @click.command()
