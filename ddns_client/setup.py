@@ -15,6 +15,7 @@ setup(
         "pytest",
         "pytest-cov",
         "pytest-mock",
+        "pyyaml"
     ],
     python_requires=">=3.6",
 )

@@ -1,10 +1,12 @@
 import paramiko
+from ddns_client.helpers import get_private_key
 
 
 def setup_paramiko():
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    private_key = paramiko.RSAKey.from_private_key_file("/home/ricroller/.ssh/id_rsa")
+    private_key_path = get_private_key()
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
     try:
         client.connect(hostname="192.168.2.254", username="ubnt", pkey=private_key)
     except paramiko.AuthenticationException:
