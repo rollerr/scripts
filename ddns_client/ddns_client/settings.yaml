@@ -1,2 +1,2 @@
 ssh_settings:
-  private_key_file: '/Users/rich/.ssh/new_id_rsa'
+  private_key_file: ['/Users/rich/.ssh/new_id_rsa', '/home/ricroller/.ssh/id_rsa']

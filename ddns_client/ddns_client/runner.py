@@ -23,8 +23,10 @@ class CloudfareExecutionContext:
             "ttl": 1,
         }
 
-    def publish_ipv4_to_cloudfare(self, ipv4_data) -> None:
-        self.ipv4_data.content = ipv4_data
+    def publish_ipv4_to_cloudfare(self) -> None:
+        import pdb
+
+        pdb.set_trace()
         cloudfare_response = requests.put(
             self.cloudfare_root_record,
             headers=self.headers,

@@ -6,7 +6,15 @@ def setup_paramiko():
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     private_key_path = get_private_key()
-    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
+    private_key = None
+    for file in private_key_path:
+        try:
+            private_key = paramiko.RSAKey.from_private_key_file(file)
+        except FileNotFoundError:
+            continue
+        finally:
+            if not private_key:
+                raise FileNotFoundError("No private key file found")
     try:
         client.connect(hostname="192.168.2.254", username="ubnt", pkey=private_key)
     except paramiko.AuthenticationException:
